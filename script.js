@@ -1,5 +1,5 @@
 // ĐƯỜNG DẪN API SHEETDB CỦA BẠN (Dán mã của bạn vào đây)
-const API_URL = "https://sheetdb.io";
+const API_URL = "https://sheetdb.io/api/v1/h9tbqw2l8hjh8";
 
 // Biến toàn cục phục vụ hệ thống
 let tatCaBaiViet = [];
