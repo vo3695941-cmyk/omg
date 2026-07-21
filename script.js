@@ -1,10 +1,10 @@
-// ĐƯỜNG DẪN API SHEETDB CỦA BẠN (Dán vào đây)
+// ĐƯỜNG DẪN API SHEETDB CỦA BẠN (Dán mã của bạn vào đây)
 const API_URL = "https://sheetdb.io/api/v1/h9tbqw2l8hjh8";
 
 // Tự động tải bài viết khi mở trang
 document.addEventListener("DOMContentLoaded", taiBaiVietWiki);
 
-// 1. TẢI VÀ TỰ ĐỘNG PHÂN LOẠI MÀU BÀI VIẾT
+// 1. TẢI VÀ TỰ ĐỘNG PHÂN LOẠI MÀU BÀI VIẾT + NỀN TẢNG
 async function taiBaiVietWiki() {
     const listContainer = document.getElementById("wikiArticlesList");
     
@@ -20,25 +20,29 @@ async function taiBaiVietWiki() {
         listContainer.innerHTML = "";
         articles.reverse().forEach(article => {
             
-            // Xử lý logic chọn Class màu dựa theo văn bản trạng thái mẫu mới
+            // Xử lý logic chọn Class màu dựa theo văn bản trạng thái
             let badgeClass = "lost"; 
             let statusText = article.status || "Thất lạc hoàn toàn";
 
             if (statusText.includes("Thất lạc một phần")) {
-                badgeClass = "lost-partial"; // Đỏ sẫm
+                badgeClass = "lost-partial"; 
             } else if (statusText.includes("Đã tìm thấy một phần")) {
-                badgeClass = "partial"; // Màu cam
+                badgeClass = "partial"; 
             } else if (statusText.includes("Đã tìm thấy hoàn toàn") || statusText.includes("hoàn toàn")) {
-                badgeClass = "found"; // Màu xanh lá
+                badgeClass = "found"; 
             } else if (statusText.includes("Tin đồn")) {
-                badgeClass = "rumor"; // Màu xám
+                badgeClass = "rumor"; 
             }
+
+            // Kiểm tra xem bài viết đó có thông tin hệ điều hành không
+            let platformText = article.platform ? `<span><b>Hệ điều hành:</b> ${article.platform}</span>` : '';
 
             const articleHTML = `
                 <article class="wiki-article">
                     <h2 class="article-title">${article.title}</h2>
                     <div class="article-meta">
                         <span><b>Thể loại:</b> ${article.category}</span>
+                        ${platformText} <!-- Hiển thị hệ điều hành ở đây -->
                         <span><b>Trạng thái:</b> <span class="badge ${badgeClass}">${statusText}</span></span>
                     </div>
                     <p class="article-body">${article.content}</p>
@@ -66,6 +70,7 @@ postForm.addEventListener("submit", async function(e) {
     const newArticle = {
         title: document.getElementById("title").value,
         category: document.getElementById("category").value,
+        platform: document.getElementById("platform").value, // Lấy dữ liệu hệ điều hành từ form
         status: document.getElementById("status").value,
         content: document.getElementById("content").value
     };
@@ -83,7 +88,7 @@ postForm.addEventListener("submit", async function(e) {
         if (response.ok) {
             alert("✓ Bài viết của bạn đã được xuất bản lên Wiki!");
             postForm.reset();
-            taiBaiVietWiki(); // Tải lại danh sách bài viết ngay lập tức
+            taiBaiVietWiki(); 
         } else {
             alert("✕ Lỗi hệ thống, không thể đăng bài.");
         }
@@ -94,4 +99,3 @@ postForm.addEventListener("submit", async function(e) {
         submitBtn.disabled = false;
     }
 });
-
