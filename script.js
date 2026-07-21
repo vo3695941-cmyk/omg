@@ -1,10 +1,19 @@
 // ĐƯỜNG DẪN API SHEETDB CỦA BẠN (Dán mã của bạn vào đây)
 const API_URL = "https://sheetdb.io/api/v1/h9tbqw2l8hjh8";
 
-// Tự động tải bài viết khi mở trang
-document.addEventListener("DOMContentLoaded", taiBaiVietWiki);
+// Biến toàn cục để lưu trữ danh sách bài viết phục vụ tìm kiếm
+let tatCaBaiViet = [];
 
-// 1. TẢI VÀ TỰ ĐỘNG PHÂN LOẠI MÀU BÀI VIẾT + NỀN TẢNG
+// Tự động tải bài viết khi mở trang
+document.addEventListener("DOMContentLoaded", () => {
+    taiBaiVietWiki();
+    
+    // KÍCH HOẠT TÍNH NĂNG TÌM KIẾM THEO THỜI GIAN THỰC
+    const searchInput = document.getElementById("wikiSearchInput");
+    searchInput.addEventListener("input", xuLyTimKiem);
+});
+
+// 1. TẢI BÀI VIẾT TỪ GOOGLE SHEETS
 async function taiBaiVietWiki() {
     const listContainer = document.getElementById("wikiArticlesList");
     
@@ -17,44 +26,71 @@ async function taiBaiVietWiki() {
             return;
         }
         
-        listContainer.innerHTML = "";
-        articles.reverse().forEach(article => {
-            
-            // Xử lý logic chọn Class màu dựa theo văn bản trạng thái
-            let badgeClass = "lost"; 
-            let statusText = article.status || "Thất lạc hoàn toàn";
-
-            if (statusText.includes("Thất lạc một phần")) {
-                badgeClass = "lost-partial"; 
-            } else if (statusText.includes("Đã tìm thấy một phần")) {
-                badgeClass = "partial"; 
-            } else if (statusText.includes("Đã tìm thấy hoàn toàn") || statusText.includes("hoàn toàn")) {
-                badgeClass = "found"; 
-            } else if (statusText.includes("Tin đồn")) {
-                badgeClass = "rumor"; 
-            }
-
-            // Kiểm tra xem bài viết đó có thông tin hệ điều hành không
-            let platformText = article.platform ? `<span><b>Hệ điều hành:</b> ${article.platform}</span>` : '';
-
-            const articleHTML = `
-                <article class="wiki-article">
-                    <h2 class="article-title">${article.title}</h2>
-                    <div class="article-meta">
-                        <span><b>Thể loại:</b> ${article.category}</span>
-                        ${platformText} <!-- Hiển thị hệ điều hành ở đây -->
-                        <span><b>Trạng thái:</b> <span class="badge ${badgeClass}">${statusText}</span></span>
-                    </div>
-                    <p class="article-body">${article.content}</p>
-                </article>
-            `;
-            listContainer.innerHTML += articleHTML;
-        });
+        // Lưu dữ liệu vào biến tổng để phục vụ cho hàm tìm kiếm
+        tatCaBaiViet = articles.reverse();
+        
+        // Hiển thị danh sách ban đầu lên màn hình
+        hienThiDanhSach(tatCaBaiViet);
         
     } catch (error) {
         listContainer.innerHTML = "<p class='loading-text' style='color: #ff3333;'>Lỗi: Không thể kết nối với cơ sở dữ liệu Wiki.</p>";
         console.error(error);
     }
+}
+
+// HÀM PHỤ TRỢ: IN GIAO DIỆN BÀI VIẾT RA MÀN HÌNH
+function hienThiDanhSach(danhSach) {
+    const listContainer = document.getElementById("wikiArticlesList");
+    listContainer.innerHTML = "";
+    
+    if (danhSach.length === 0) {
+        listContainer.innerHTML = "<p class='loading-text'>❌ Không tìm thấy hồ sơ nào khớp với từ khóa của bạn.</p>";
+        return;
+    }
+    
+    danhSach.forEach(article => {
+        let badgeClass = "lost"; 
+        let statusText = article.status || "Thất lạc hoàn toàn";
+
+        if (statusText.includes("Thất lạc một phần")) {
+            badgeClass = "lost-partial"; 
+        } else if (statusText.includes("Đã tìm thấy một phần")) {
+            badgeClass = "partial"; 
+        } else if (statusText.includes("Đã tìm thấy hoàn toàn") || statusText.includes("hoàn toàn")) {
+            badgeClass = "found"; 
+        } else if (statusText.includes("Tin đồn")) {
+            badgeClass = "rumor"; 
+        }
+
+        let platformText = article.platform ? `<span><b>Hệ điều hành:</b> ${article.platform}</span>` : '';
+
+        const articleHTML = `
+            <article class="wiki-article">
+                <h2 class="article-title">${article.title}</h2>
+                <div class="article-meta">
+                    <span><b>Thể loại:</b> ${article.category}</span>
+                    ${platformText}
+                    <span><b>Trạng thái:</b> <span class="badge ${badgeClass}">${statusText}</span></span>
+                </div>
+                <p class="article-body">${article.content}</p>
+            </article>
+        `;
+        listContainer.innerHTML += articleHTML;
+    });
+}
+
+// CẬP NHẬT: HÀM LỌC TÌM KIẾM THEO TÊN BÀI VIẾT
+function xuLyTimKiem(e) {
+    const tuKhoa = e.target.value.toLowerCase().trim();
+    
+    // Tiến hành lọc các bài viết có tiêu đề chứa từ khóa người dùng nhập vào
+    const ketQuaLoc = tatCaBaiViet.filter(article => {
+        const tieuDe = article.title ? article.title.toLowerCase() : "";
+        return tieuDe.includes(tuKhoa);
+    });
+    
+    // In danh sách sau khi lọc ra màn hình
+    hienThiDanhSach(ketQuaLoc);
 }
 
 // 2. GỬI BÀI VIẾT MỚI LÊN GOOGLE SHEETS
@@ -70,7 +106,7 @@ postForm.addEventListener("submit", async function(e) {
     const newArticle = {
         title: document.getElementById("title").value,
         category: document.getElementById("category").value,
-        platform: document.getElementById("platform").value, // Lấy dữ liệu hệ điều hành từ form
+        platform: document.getElementById("platform").value,
         status: document.getElementById("status").value,
         content: document.getElementById("content").value
     };
@@ -88,6 +124,8 @@ postForm.addEventListener("submit", async function(e) {
         if (response.ok) {
             alert("✓ Bài viết của bạn đã được xuất bản lên Wiki!");
             postForm.reset();
+            // Xóa chữ trong ô tìm kiếm khi đăng bài mới để tránh bị lỗi hiển thị
+            document.getElementById("wikiSearchInput").value = "";
             taiBaiVietWiki(); 
         } else {
             alert("✕ Lỗi hệ thống, không thể đăng bài.");
