@@ -1,4 +1,4 @@
-// ĐƯỜNG DẪN API SHEETDB CỦA BẠN (Dán mã của bạn vào đây)
+// ĐƯỜNG DẪN API SHEETDB CỦA BẠN (Dán mã thật của bạn vào đây)
 const API_URL = "https://sheetdb.io/api/v1/h9tbqw2l8hjh8";
 
 // Biến toàn cục phục vụ hệ thống
@@ -12,14 +12,14 @@ document.addEventListener("DOMContentLoaded", () => {
     
     // Kích hoạt thanh tìm kiếm thời gian thực
     const searchInput = document.getElementById("wikiSearchInput");
-    searchInput.addEventListener("input", xuLyTimKiem);
+    if(searchInput) searchInput.addEventListener("input", xuLyTimKiem);
 
     // Kích hoạt nút đặt tên
     const step1Form = document.getElementById("step1Form");
     if(step1Form) step1Form.addEventListener("submit", xuLyDatTen);
 });
 
-// HÀM KIỂM TRA XEM TRONG MÁY ĐÃ CÓ TÊN CHƯA (Khóa cứng tên trên máy cũ)
+// HÀM KIỂM TRA LOCALSTORAGE TRÊN ĐIỆN THOẠI
 function kiemTraUserLocal() {
     const savedUser = localStorage.getItem("wiki_username");
     if (savedUser) {
@@ -28,7 +28,7 @@ function kiemTraUserLocal() {
     }
 }
 
-// HÀM XỬ LÝ ĐẶT TÊN VÀ KIỂM TRA TRÙNG LẶP TRÊN SHEET 2
+// HÀM ĐĂNG KÝ BIỆT DANH VÀ KIỂM TRA TRÙNG NHAU (GỬI ĐẾN TRANG TÍNH2)
 async function xuLyDatTen(e) {
     e.preventDefault();
     const inputName = document.getElementById("regUsername").value.trim();
@@ -40,37 +40,49 @@ async function xuLyDatTen(e) {
     regBtn.disabled = true;
 
     try {
-        // Gọi lên Sheet2 để kiểm tra danh sách tên trùng
+        // 1. Lấy danh sách tên từ Trang tính2 về để đối chiếu xem có trùng không
         const response = await fetch(`${API_URL}?sheet=Trang tính2`);
         const usersList = await response.json();
+        const danhSachTen = Array.isArray(usersList) ? usersList : [];
         
-        const biTrung = usersList.some(user => user.username && user.username.toLowerCase() === inputName.toLowerCase());
+        const biTrung = danhSachTen.some(user => user.username && user.username.toString().toLowerCase() === inputName.toLowerCase());
         
         if (biTrung) {
             alert(`✕ Tên "${inputName}" đã có người sử dụng! Vui lòng chọn tên khác.`);
             regBtn.innerText = "XÁC NHẬN BIỆT DANH";
             regBtn.disabled = false;
         } else {
-            // Lưu tên mới độc quyền lên Sheet2
+            // 2. Gửi dữ liệu theo đúng chuẩn Array mảng bọc Object đối tượng của SheetDB
             const registerRes = await fetch(`${API_URL}?sheet=Trang tính2`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ data: [{ username: inputName }] })
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    data: [
+                        { "username": inputName }
+                    ]
+                })
             });
 
             if(registerRes.ok) {
+                // Lưu tên vào máy điện thoại để không bắt nhập lại lần sau
                 localStorage.setItem("wiki_username", inputName);
                 userHienTai = inputName;
                 alert(`✓ Đăng ký tên độc quyền "${inputName}" thành công!`);
                 hienThiFormDangBai();
             } else {
-                alert("✕ Lỗi kết nối sever đăng ký.");
+                alert("✕ Lỗi kết nối máy chủ đăng ký dữ liệu.");
+                regBtn.innerText = "XÁC NHẬN BIỆT DANH";
                 regBtn.disabled = false;
             }
         }
     } catch (error) {
-        alert("✕ Lỗi kiểm tra cơ sở dữ liệu.");
+        alert("✕ Lỗi cấu trúc bảng dữ liệu phụ.");
+        regBtn.innerText = "XÁC NHẬN BIỆT DANH";
         regBtn.disabled = false;
+        console.error(error);
     }
 }
 
@@ -80,20 +92,21 @@ function hienThiFormDangBai() {
     document.getElementById("currentUserDisplay").innerText = userHienTai;
 }
 
-// 1. TẢI BÀI VIẾT TỪ GOOGLE SHEETS
+// 3. TẢI TOÀN BỘ BÀI VIẾT TỪ TRANG TÍNH1 LÊN WEB
 async function taiBaiVietWiki() {
     const listContainer = document.getElementById("wikiArticlesList");
     
     try {
-        const response = await fetch(API_URL);
+        const response = await fetch(`${API_URL}?sheet=Trang tính1`);
         const articles = await response.json();
-        
-        if (articles.length === 0) {
+        const danhSachBai = Array.isArray(articles) ? articles : [];
+
+        if (danhSachBai.length === 0 || danhSachBai.error) {
             listContainer.innerHTML = "<p class='loading-text'>Chưa có hồ sơ Lost Media nào được đăng. Hãy là người đầu tiên!</p>";
             return;
         }
         
-        tatCaBaiViet = articles.reverse();
+        tatCaBaiViet = danhSachBai.reverse();
         hienThiDanhSach(tatCaBaiViet);
         
     } catch (error) {
@@ -101,7 +114,7 @@ async function taiBaiVietWiki() {
     }
 }
 
-// IN BÀI VIẾT RA GIAO DIỆN
+// IN BÀI VIẾT RA GIAO DIỆN MÀN HÌNH
 function hienThiDanhSach(danhSach) {
     const listContainer = document.getElementById("wikiArticlesList");
     listContainer.innerHTML = "";
@@ -144,7 +157,7 @@ function hienThiDanhSach(danhSach) {
     });
 }
 
-// HÀM LỌC TÌM KIẾM
+// HÀM LỌC TÌM KIẾM THEO TỪ KHÓA TÊN GAME
 function xuLyTimKiem(e) {
     const tuKhoa = e.target.value.toLowerCase().trim();
     const ketQuaLoc = tatCaBaiViet.filter(article => {
@@ -154,7 +167,7 @@ function xuLyTimKiem(e) {
     hienThiDanhSach(ketQuaLoc);
 }
 
-// 2. GỬI BÀI VIẾT MỚI LÊN GOOGLE SHEETS
+// 4. GỬI BÀI VIẾT MỚI LÊN TRANG TÍNH1
 const postForm = document.getElementById("postForm");
 const submitBtn = document.getElementById("submitBtn");
 
@@ -175,7 +188,7 @@ if(postForm) {
         };
         
         try {
-            const response = await fetch(API_URL, {
+            const response = await fetch(`${API_URL}?sheet=Trang tính1`, {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
