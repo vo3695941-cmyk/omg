@@ -100,6 +100,31 @@ body {
     background-color: #cc0000;
 }
 
+/* KHUNG HIỂN THỊ KHÓA TÊN THÀNH VIÊN */
+.user-lock-box {
+    background-color: #222;
+    border: 1px solid #444;
+    padding: 8px 12px;
+    font-size: 13px;
+    margin-bottom: 15px;
+    border-radius: 3px;
+}
+
+#regBtn {
+    width: 100%;
+    background-color: #00ffcc;
+    color: #121212;
+    border: none;
+    padding: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+#regBtn:hover { 
+    background-color: #00cca3; 
+}
+
 /* Cột ở giữa - Danh sách bài viết */
 .wiki-content {
     flex-grow: 1;
@@ -109,16 +134,16 @@ body {
     border-radius: 4px;
 }
 
-/* CẬP NHẬT: TĂNG KÍCH THƯỚC TIÊU ĐỀ HỒ SƠ LƯU TRỮ */
+/* TĂNG KÍCH THƯỚC TIÊU ĐỀ */
 .page-title {
     margin-top: 0;
-    font-size: 36px; /* Đã tăng từ 26px lên 36px để to rõ ràng hơn */
+    font-size: 36px; 
     font-weight: bold;
     color: #ffffff;
     letter-spacing: 0.5px;
 }
 
-/* CẬP NHẬT: THẨM MỸ CHO Ô TÌM KIẾM */
+/* THẨM MỸ CHO Ô TÌM KIẾM */
 .search-box-container {
     margin: 20px 0;
 }
@@ -127,7 +152,7 @@ body {
     width: 100%;
     box-sizing: border-box;
     background-color: #151515;
-    border: 1px solid #00ffcc; /* Viền xanh neon nổi bật */
+    border: 1px solid #00ffcc; 
     color: #ffffff;
     padding: 12px 15px;
     font-size: 15px;
