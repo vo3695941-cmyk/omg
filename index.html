@@ -22,12 +22,24 @@
                 <form id="postForm">
                     <div class="form-group">
                         <label>Tên ấn phẩm:</label>
-                        <input type="text" id="title" required placeholder="Ví dụ: Quảng cáo Viso 2003">
+                        <input type="text" id="title" required placeholder="Ví dụ: Flappy Bird bản gốc">
                     </div>
                     <div class="form-group">
                         <label>Thể loại:</label>
-                        <input type="text" id="category" required placeholder="Ví dụ: TVC Quảng cáo, Phim hoạt hình">
+                        <input type="text" id="category" required placeholder="Ví dụ: Game di động, Ứng dụng">
                     </div>
+                    
+                    <!-- Ô MỚI THÊM: LỰA CHỌN HỆ ĐIỀU HÀNH -->
+                    <div class="form-group">
+                        <label>Hệ điều hành / Nền tảng:</label>
+                        <select id="platform">
+                            <option value="Không có / Bản PC / TV">Không áp dụng (Không phải app di động)</option>
+                            <option value="Android">Chỉ chạy trên Android</option>
+                            <option value="iOS">Chỉ chạy trên iOS (iPhone/iPad)</option>
+                            <option value="Cả iOS & Android">Hỗ trợ cả iOS và Android</option>
+                        </select>
+                    </div>
+
                     <div class="form-group">
                         <label>Tình trạng:</label>
                         <select id="status">
@@ -65,4 +77,3 @@
     <script src="script.js"></script>
 </body>
 </html>
-
