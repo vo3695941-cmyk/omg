@@ -1,14 +1,14 @@
 // ĐƯỜNG DẪN API SHEETDB CỦA BẠN (Dán mã của bạn vào đây)
 const API_URL = "https://sheetdb.io/api/v1/h9tbqw2l8hjh8";
 
-// Biến toàn cục để lưu trữ danh sách bài viết phục vụ tìm kiếm
+// Biến toàn cục phục vụ tìm kiếm
 let tatCaBaiViet = [];
 
 // Tự động tải bài viết khi mở trang
 document.addEventListener("DOMContentLoaded", () => {
     taiBaiVietWiki();
     
-    // KÍCH HOẠT TÍNH NĂNG TÌM KIẾM THEO THỜI GIAN THỰC
+    // Kích hoạt thanh tìm kiếm thời gian thực
     const searchInput = document.getElementById("wikiSearchInput");
     searchInput.addEventListener("input", xuLyTimKiem);
 });
@@ -26,10 +26,7 @@ async function taiBaiVietWiki() {
             return;
         }
         
-        // Lưu dữ liệu vào biến tổng để phục vụ cho hàm tìm kiếm
         tatCaBaiViet = articles.reverse();
-        
-        // Hiển thị danh sách ban đầu lên màn hình
         hienThiDanhSach(tatCaBaiViet);
         
     } catch (error) {
@@ -38,7 +35,7 @@ async function taiBaiVietWiki() {
     }
 }
 
-// HÀM PHỤ TRỢ: IN GIAO DIỆN BÀI VIẾT RA MÀN HÌNH
+// IN BÀI VIẾT RA GIAO DIỆN
 function hienThiDanhSach(danhSach) {
     const listContainer = document.getElementById("wikiArticlesList");
     listContainer.innerHTML = "";
@@ -79,17 +76,13 @@ function hienThiDanhSach(danhSach) {
     });
 }
 
-// CẬP NHẬT: HÀM LỌC TÌM KIẾM THEO TÊN BÀI VIẾT
+// HÀM LỌC TÌM KIẾM
 function xuLyTimKiem(e) {
     const tuKhoa = e.target.value.toLowerCase().trim();
-    
-    // Tiến hành lọc các bài viết có tiêu đề chứa từ khóa người dùng nhập vào
     const ketQuaLoc = tatCaBaiViet.filter(article => {
         const tieuDe = article.title ? article.title.toLowerCase() : "";
         return tieuDe.includes(tuKhoa);
     });
-    
-    // In danh sách sau khi lọc ra màn hình
     hienThiDanhSach(ketQuaLoc);
 }
 
@@ -124,7 +117,6 @@ postForm.addEventListener("submit", async function(e) {
         if (response.ok) {
             alert("✓ Bài viết của bạn đã được xuất bản lên Wiki!");
             postForm.reset();
-            // Xóa chữ trong ô tìm kiếm khi đăng bài mới để tránh bị lỗi hiển thị
             document.getElementById("wikiSearchInput").value = "";
             taiBaiVietWiki(); 
         } else {
@@ -135,5 +127,29 @@ postForm.addEventListener("submit", async function(e) {
     } finally {
         submitBtn.innerText = "XUẤT BẢN BÀI VIẾT";
         submitBtn.disabled = false;
+    }
+});
+
+// --- BỘ BẢO MẬT: CHẶN F12 VÀ CHUỘT PHẢI ---
+document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    alert('⚠️ Hành động bị chặn: Không cho phép dùng chuột phải trên Wiki!');
+});
+
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'F12' || e.keyCode === 123) {
+        e.preventDefault();
+        alert('⚠️ Hành động bị chặn: Phím F12 đã bị vô hiệu hóa!');
+        return false;
+    }
+    if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C' || e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) {
+        e.preventDefault();
+        alert('⚠️ Hành động bị chặn: Tổ hợp phím nhà phát triển không hợp lệ!');
+        return false;
+    }
+    if (e.ctrlKey && (e.key === 'u' || e.key === 'U' || e.keyCode === 85)) {
+        e.preventDefault();
+        alert('⚠️ Hành động bị chặn: Không thể xem mã nguồn trang web này!');
+        return false;
     }
 });
