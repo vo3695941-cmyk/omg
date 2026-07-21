@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lost Media Wiki Việt Nam - Bách Khoa Toàn Thư Mở</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Thanh công cụ trên cùng -->
+    <header class="wiki-header">
+        <div class="wiki-logo">LOST MEDIA WIKI</div>
+        <div class="wiki-tagline">Hệ thống lưu trữ ký ức bị thất lạc</div>
+    </header>
+
+    <div class="wiki-container">
+        <!-- BÊN TRÁI: Form đăng bài mới -->
+        <aside class="wiki-sidebar">
+            <div class="form-container">
+                <h3>[ ĐĂNG BÀI MỚI ]</h3>
+                <form id="postForm">
+                    <div class="form-group">
+                        <label>Tên ấn phẩm:</label>
+                        <input type="text" id="title" required placeholder="Ví dụ: Quảng cáo Viso 2003">
+                    </div>
+                    <div class="form-group">
+                        <label>Thể loại:</label>
+                        <input type="text" id="category" required placeholder="Ví dụ: TVC Quảng cáo, Phim hoạt hình">
+                    </div>
+                    <div class="form-group">
+                        <label>Tình trạng:</label>
+                        <select id="status">
+                            <option value="Thất lạc hoàn toàn">Thất lạc hoàn toàn</option>
+                            <option value="Thất lạc một phần">Thất lạc một phần</option>
+                            <option value="Đã tìm thấy một phần">Đã tìm thấy một phần</option>
+                            <option value="Đã tìm thấy hoàn toàn">Đã tìm thấy hoàn toàn</option>
+                            <option value="Tin đồn / Chưa xác minh">Tin đồn / Chưa xác minh</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Nội dung / Ký ức chi tiết:</label>
+                        <textarea id="content" rows="6" required placeholder="Mô tả chi tiết những gì bạn nhớ hoặc bằng chứng..."></textarea>
+                    </div>
+                    <button type="submit" id="submitBtn">XUẤT BẢN BÀI VIẾT</button>
+                </form>
+            </div>
+        </aside>
+
+        <!-- Ở GIỮA: Danh sách bài viết -->
+        <main class="wiki-content">
+            <h1 class="page-title">Hồ Sơ Lưu Trữ Cộng Đồng</h1>
+            <hr class="wiki-hr">
+            
+            <div id="wikiArticlesList">
+                <p class="loading-text">Đang tải cơ sở dữ liệu Wiki...</p>
+            </div>
+        </main>
+    </div>
+
+    <footer class="wiki-footer">
+        <p>Mã nguồn mở vận hành trên GitHub Pages & SheetDB. Nội dung do cộng đồng đóng góp.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
