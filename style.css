@@ -109,10 +109,35 @@ body {
     border-radius: 4px;
 }
 
+/* CẬP NHẬT: TĂNG KÍCH THƯỚC TIÊU ĐỀ HỒ SƠ LƯU TRỮ */
 .page-title {
     margin-top: 0;
-    font-size: 26px;
-    font-weight: normal;
+    font-size: 36px; /* Đã tăng từ 26px lên 36px để to rõ ràng hơn */
+    font-weight: bold;
+    color: #ffffff;
+    letter-spacing: 0.5px;
+}
+
+/* CẬP NHẬT: THẨM MỸ CHO Ô TÌM KIẾM */
+.search-box-container {
+    margin: 20px 0;
+}
+
+#wikiSearchInput {
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #151515;
+    border: 1px solid #00ffcc; /* Viền xanh neon nổi bật */
+    color: #ffffff;
+    padding: 12px 15px;
+    font-size: 15px;
+    border-radius: 4px;
+    font-family: inherit;
+}
+
+#wikiSearchInput:focus {
+    outline: none;
+    box-shadow: 0 0 8px rgba(0, 255, 204, 0.4);
 }
 
 .wiki-hr {
@@ -155,25 +180,11 @@ body {
     border-radius: 3px;
 }
 
-.badge.lost {
-    background-color: #ff3333; /* Đỏ tươi - Thất lạc hoàn toàn */
-}
-
-.badge.lost-partial {
-    background-color: #b30000; /* Đỏ sẫm - Thất lạc một phần */
-}
-
-.badge.partial {
-    background-color: #ff9900; /* Cam - Tìm thấy một phần */
-}
-
-.badge.found {
-    background-color: #00cc66; /* Xanh lá - Tìm thấy hoàn toàn */
-}
-
-.badge.rumor {
-    background-color: #777777; /* Xám - Tin đồn */
-}
+.badge.lost { background-color: #ff3333; }
+.badge.lost-partial { background-color: #b30000; }
+.badge.partial { background-color: #ff9900; }
+.badge.found { background-color: #00cc66; }
+.badge.rumor { background-color: #777777; }
 
 .article-body {
     line-height: 1.6;
@@ -193,4 +204,3 @@ body {
     font-size: 12px;
     color: #555;
 }
-
