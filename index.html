@@ -15,10 +15,28 @@
     </header>
 
     <div class="wiki-container">
-        <!-- BÊN TRÁI: Form đăng bài mới -->
+        <!-- BÊN TRÁI: Khu vực Thành viên & Form đăng bài -->
         <aside class="wiki-sidebar">
-            <div class="form-container">
+            
+            <!-- BƯỚC 1: BẮT BUỘC ĐẶT TÊN TRƯỚC -->
+            <div class="form-container" id="authStep">
+                <h3>[ ĐĂNG KÝ BIỆT DANH ]</h3>
+                <p style="font-size: 12px; color: #aaa; margin-bottom: 15px;">Bạn cần chọn một cái tên duy nhất để ghi nhận đóng góp công lao. Tên này <b>không thể thay đổi</b> sau khi xác nhận.</p>
+                <form id="step1Form">
+                    <div class="form-group">
+                        <label>Nhập tên của bạn:</label>
+                        <input type="text" id="regUsername" required placeholder="Ví dụ: HackerLostMedia, Gamer9x..." maxlength="20">
+                    </div>
+                    <button type="submit" id="regBtn">XÁC NHẬN BIỆT DANH</button>
+                </form>
+            </div>
+
+            <!-- BƯỚC 2: KHÓA TÊN VÀ HIỆN FORM ĐĂNG BÀI (MẶC ĐỊNH BỊ ẨN) -->
+            <div class="form-container" id="postStep" style="display: none;">
                 <h3>[ ĐĂNG BÀI MỚI ]</h3>
+                <div class="user-lock-box">
+                    👤 Tài khoản: <b id="currentUserDisplay" style="color: #00ffcc;"></b> <span style="font-size: 11px; color: #888;">(Đã khóa cứng)</span>
+                </div>
                 <form id="postForm">
                     <div class="form-group">
                         <label>Tên ấn phẩm:</label>
@@ -28,7 +46,6 @@
                         <label>Thể loại:</label>
                         <input type="text" id="category" required placeholder="Ví dụ: Game di động, Ứng dụng">
                     </div>
-                    
                     <div class="form-group">
                         <label>Hệ điều hành / Nền tảng:</label>
                         <select id="platform">
@@ -38,7 +55,6 @@
                             <option value="Cả iOS & Android">Hỗ trợ cả iOS và Android</option>
                         </select>
                     </div>
-
                     <div class="form-group">
                         <label>Tình trạng:</label>
                         <select id="status">
@@ -60,10 +76,9 @@
 
         <!-- Ở GIỮA: Danh sách bài viết & Thanh Tìm Kiếm -->
         <main class="wiki-content">
-            <!-- ĐÃ TĂNG KÍCH THƯỚC TIÊU ĐỀ NÀY QUA FILE CSS -->
             <h1 class="page-title">Hồ Sơ Lưu Trữ Cộng Đồng</h1>
             
-            <!-- CẬP NHẬT: THANH TÌM KIẾM TRỰC TIẾP -->
+            <!-- THANH TÌM KIẾM TRỰC TIẾP -->
             <div class="search-box-container">
                 <input type="text" id="wikiSearchInput" placeholder="🔍 Nhập tên game hoặc ấn phẩm để tìm nhanh...">
             </div>
