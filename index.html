@@ -15,7 +15,7 @@
     </header>
 
     <div class="wiki-container">
-        <!-- BÊN TRÁI: Form đăng bài mới -->
+        <!-- BÊN TRÁI: Khu vực Thành viên & Form đăng bài -->
         <aside class="wiki-sidebar">
             
             <!-- BƯỚC 1: BẮT BUỘC ĐẶT TÊN TRƯỚC -->
@@ -31,7 +31,7 @@
                 </form>
             </div>
 
-            <!-- BƯỚC 2: KHÓA TÊN VÀ HIỆN FORM ĐĂNG BÀI -->
+            <!-- BƯỚC 2: KHÓA TÊN VÀ HIỆN FORM ĐĂNG BÀI (MẶC ĐỊNH BỊ ẨN) -->
             <div class="form-container" id="postStep" style="display: none;">
                 <h3>[ ĐĂNG BÀI MỚI ]</h3>
                 <div class="user-lock-box">
@@ -56,18 +56,19 @@
                         </select>
                     </div>
 
-                    <!-- THÊM MỚI: NHẬP LINK ẢNH MINH HỌA -->
+                    <!-- ĐÃ SỬA LỖI THẺ DIV CHO KHUNG ẢNH -->
                     <div class="form-group">
                         <label>Link hình ảnh bằng chứng (Không bắt buộc):</label>
                         <input type="url" id="imageUrl" placeholder="Dán link ảnh từ ImgBB, Google Drive...">
                     </div>
 
-                    <!-- THÊM MỚI: NHẬP LINK VIDEO YOUTUBE -->
+                    <!-- ĐÃ SỬA LỖI THẺ DIV CHO KHUNG VIDEO TỔNG HỢP -->
                     <div class="form-group">
-                        <label>Link video chứng cứ (YouTube công khai - Không bắt buộc):</label>
-                        <input type="url" id="videoUrl" placeholder="Ví dụ: https://youtube.com...">
+                        <label>Link video chứng cứ (Không bắt buộc):</label>
+                        <input type="url" id="videoUrl" placeholder="Dán link video từ YouTube, TikTok, Drive...">
                     </div>
 
+                    <!-- ĐÃ SỬA LỖI THẺ DIV CHO TRẠNG THÁI -->
                     <div class="form-group">
                         <label>Tình trạng:</label>
                         <select id="status">
@@ -78,6 +79,8 @@
                             <option value="Tin đồn / Chưa xác minh">Tin đồn / Chưa xác minh</option>
                         </select>
                     </div>
+
+                    <!-- ĐÃ SỬA LỖI THẺ DIV CHO MÔ TẢ CHI TIẾT -->
                     <div class="form-group">
                         <label>Mô tả chi tiết bài viết:</label>
                         <textarea id="content" rows="6" required placeholder="Mô tả chi tiết những gì bạn nhớ hoặc bằng chứng..."></textarea>
@@ -91,11 +94,14 @@
         <main class="wiki-content">
             <h1 class="page-title">Hồ Sơ Lưu Trữ Cộng Đồng</h1>
             
+            <!-- THANH TÌM KIẾM TRỰC TIẾP -->
             <div class="search-box-container">
                 <input type="text" id="wikiSearchInput" placeholder="🔍 Nhập tên game hoặc ấn phẩm để tìm nhanh...">
             </div>
             
             <hr class="wiki-hr">
+            
+            <!-- Nơi chứa danh sách bài viết -->
             <div id="wikiArticlesList">
                 <p class="loading-text">Đang tải cơ sở dữ liệu Wiki...</p>
             </div>
