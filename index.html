@@ -15,7 +15,7 @@
     </header>
 
     <div class="wiki-container">
-        <!-- BÊN TRÁI: Khu vực Thành viên & Form đăng bài -->
+        <!-- BÊN TRÁI: Form đăng bài mới -->
         <aside class="wiki-sidebar">
             
             <!-- BƯỚC 1: BẮT BUỘC ĐẶT TÊN TRƯỚC -->
@@ -31,7 +31,7 @@
                 </form>
             </div>
 
-            <!-- BƯỚC 2: KHÓA TÊN VÀ HIỆN FORM ĐĂNG BÀI (MẶC ĐỊNH BỊ ẨN) -->
+            <!-- BƯỚC 2: KHÓA TÊN VÀ HIỆN FORM ĐĂNG BÀI -->
             <div class="form-container" id="postStep" style="display: none;">
                 <h3>[ ĐĂNG BÀI MỚI ]</h3>
                 <div class="user-lock-box">
@@ -55,6 +55,19 @@
                             <option value="Cả iOS & Android">Hỗ trợ cả iOS và Android</option>
                         </select>
                     </div>
+
+                    <!-- THÊM MỚI: NHẬP LINK ẢNH MINH HỌA -->
+                    <div class="form-group">
+                        <label>Link hình ảnh bằng chứng (Không bắt buộc):</label>
+                        <input type="url" id="imageUrl" placeholder="Dán link ảnh từ ImgBB, Google Drive...">
+                    </div>
+
+                    <!-- THÊM MỚI: NHẬP LINK VIDEO YOUTUBE -->
+                    <div class="form-group">
+                        <label>Link video chứng cứ (YouTube công khai - Không bắt buộc):</label>
+                        <input type="url" id="videoUrl" placeholder="Ví dụ: https://youtube.com...">
+                    </div>
+
                     <div class="form-group">
                         <label>Tình trạng:</label>
                         <select id="status">
@@ -66,7 +79,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>Nội dung / Ký ức chi tiết:</label>
+                        <label>Mô tả chi tiết bài viết:</label>
                         <textarea id="content" rows="6" required placeholder="Mô tả chi tiết những gì bạn nhớ hoặc bằng chứng..."></textarea>
                     </div>
                     <button type="submit" id="submitBtn">XUẤT BẢN BÀI VIẾT</button>
@@ -78,14 +91,11 @@
         <main class="wiki-content">
             <h1 class="page-title">Hồ Sơ Lưu Trữ Cộng Đồng</h1>
             
-            <!-- THANH TÌM KIẾM TRỰC TIẾP -->
             <div class="search-box-container">
                 <input type="text" id="wikiSearchInput" placeholder="🔍 Nhập tên game hoặc ấn phẩm để tìm nhanh...">
             </div>
             
             <hr class="wiki-hr">
-            
-            <!-- Nơi chứa danh sách bài viết -->
             <div id="wikiArticlesList">
                 <p class="loading-text">Đang tải cơ sở dữ liệu Wiki...</p>
             </div>
@@ -93,7 +103,7 @@
     </div>
 
     <footer class="wiki-footer">
-        <p>Mã nguồn mở vận hành trên GitHub Pages và SheetDB. Nội dung do cộng đồng đóng góp.</p>
+        <p>Mã nguồn mở vận hành trên GitHub Pages & SheetDB. Nội dung do cộng đồng đóng góp.</p>
     </footer>
 
     <script src="script.js"></script>
