@@ -1,4 +1,4 @@
-// ĐƯỜNG DẪN API SHEETDB CỦA BẠN (Dán mã của bạn vào đây)
+// ĐƯỜNG DẪN API SHEETDB CỦA BẠN (Dán mã thật của bạn vào đây)
 const API_URL = "https://sheetdb.io/api/v1/h9tbqw2l8hjh8";
 
 // Biến toàn cục phục vụ hệ thống
@@ -92,7 +92,7 @@ async function taiBaiVietWiki() {
     }
 }
 
-// HÀM CHUYỂN LINK YOUTUBE THƯỜNG THÀNH LINK EMBED ĐỂ CHẠY ĐƯỢC TRÊN WEB
+// Hàm lọc lấy ID video YouTube
 function layYoutubeEmbedId(url) {
     if(!url) return null;
     let regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
@@ -110,6 +110,7 @@ function hienThiDanhSach(danhSach) {
     }
     
     danhSach.forEach(article => {
+        // 1. Logic chọn màu nhãn TRẠNG THÁI
         let badgeClass = "lost"; 
         let statusText = article.status || "Thất lạc hoàn toàn";
         if (statusText.includes("Thất lạc một phần")) badgeClass = "lost-partial"; 
@@ -117,18 +118,36 @@ function hienThiDanhSach(danhSach) {
         else if (statusText.includes("Đã tìm thấy hoàn toàn")) badgeClass = "found"; 
         else if (statusText.includes("Tin đồn")) badgeClass = "rumor"; 
 
-        let platformText = article.platform ? `<span><b>Hệ điều hành:</b> ${article.platform}</span>` : '';
+        // 2. Logic chọn màu nhãn HỆ ĐIỀU HÀNH
+        let platformClass = "platform-none";
+        let platformValue = article.platform || "";
+        if (platformValue.includes("Android") && platformValue.includes("iOS")) platformClass = "platform-both";
+        else if (platformValue.includes("Android")) platformClass = "platform-android";
+        else if (platformValue.includes("iOS")) platformClass = "platform-ios";
+
+        let platformText = article.platform ? `<span><b>Hệ điều hành:</b> <span class="badge ${platformClass}">${article.platform}</span></span>` : '';
         let authorText = `<span><b>Người đóng góp:</b> 👤 ${article.author || "Thành viên"}</span>`;
 
-        // TỰ ĐỘNG XỬ LÝ ẢNH VÀ VIDEO NHÚNG
+        // 3. Xử lý hiển thị đa phương tiện (Ảnh & Video đa nền tảng)
         let mediaHTML = "";
         if (article.image_url && article.image_url.trim() !== "") {
             mediaHTML += `<img src="${article.image_url}" class="wiki-uploaded-img" alt="Bằng chứng">`;
         }
         
-        let ytId = layYoutubeEmbedId(article.video_url);
-        if (ytId) {
-            mediaHTML += `<div class="video-container"><iframe src="https://youtube.com{ytId}" allowfullscreen></iframe></div>`;
+        if (article.video_url && article.video_url.trim() !== "") {
+            let ytId = layYoutubeEmbedId(article.video_url);
+            if (ytId) {
+                // Nếu dán link YouTube thì nhúng khung phát trực tiếp
+                mediaHTML += `<div class="video-container"><iframe src="https://youtube.com{ytId}" allowfullscreen></iframe></div>`;
+            } else {
+                // Nếu dán link nền tảng khác (TikTok, Drive, FB...) thì biến thành nút bấm
+                mediaHTML += `
+                    <div style="margin-top: 10px;">
+                        <a href="${article.video_url}" target="_blank" class="badge" style="background-color: #00ffcc; color: #121212; text-decoration: none; display: inline-block; padding: 8px 15px; text-transform: none; border-radius: 4px;">
+                            🎬 Bấm để xem Video bằng chứng (Mở tab mới)
+                        </a>
+                    </div>`;
+            }
         }
 
         const articleHTML = `
@@ -169,8 +188,8 @@ if(postForm) {
             title: document.getElementById("title").value,
             category: document.getElementById("category").value,
             platform: document.getElementById("platform").value,
-            image_url: document.getElementById("imageUrl").value, // Lấy link ảnh
-            video_url: document.getElementById("videoUrl").value, // Lấy link video
+            image_url: document.getElementById("imageUrl").value, 
+            video_url: document.getElementById("videoUrl").value, 
             status: document.getElementById("status").value,
             content: document.getElementById("content").value,
             author: userHienTai 
@@ -194,7 +213,7 @@ if(postForm) {
     });
 }
 
-// BỘ BẢO MẬT CHẶN F12 VÀ CHUỘT PHẢI
+// BỘ BẢO MẬT CHẶN F12
 document.addEventListener('contextmenu', e => e.preventDefault());
 document.addEventListener('keydown', function(e) {
     if (e.key === 'F12' || e.keyCode === 123 || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) || (e.ctrlKey && e.key === 'u')) {
