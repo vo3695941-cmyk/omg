@@ -35,7 +35,6 @@ body {
     gap: 30px;
 }
 
-/* Cột bên trái - Form */
 .wiki-sidebar {
     width: 320px;
     flex-shrink: 0;
@@ -85,10 +84,8 @@ body {
     border-color: #00ffcc;
 }
 
-#submitBtn {
+#submitBtn, #regBtn {
     width: 100%;
-    background-color: #ff3333;
-    color: white;
     border: none;
     padding: 10px;
     font-weight: bold;
@@ -96,11 +93,11 @@ body {
     transition: 0.2s;
 }
 
-#submitBtn:hover {
-    background-color: #cc0000;
-}
+#submitBtn { background-color: #ff3333; color: white; }
+#submitBtn:hover { background-color: #cc0000; }
+#regBtn { background-color: #00ffcc; color: #121212; }
+#regBtn:hover { background-color: #00cca3; }
 
-/* KHUNG HIỂN THỊ KHÓA TÊN THÀNH VIÊN */
 .user-lock-box {
     background-color: #222;
     border: 1px solid #444;
@@ -110,22 +107,6 @@ body {
     border-radius: 3px;
 }
 
-#regBtn {
-    width: 100%;
-    background-color: #00ffcc;
-    color: #121212;
-    border: none;
-    padding: 10px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-#regBtn:hover { 
-    background-color: #00cca3; 
-}
-
-/* Cột ở giữa - Danh sách bài viết */
 .wiki-content {
     flex-grow: 1;
     background-color: #1a1a1a;
@@ -134,20 +115,14 @@ body {
     border-radius: 4px;
 }
 
-/* TĂNG KÍCH THƯỚC TIÊU ĐỀ */
 .page-title {
     margin-top: 0;
     font-size: 36px; 
     font-weight: bold;
     color: #ffffff;
-    letter-spacing: 0.5px;
 }
 
-/* THẨM MỸ CHO Ô TÌM KIẾM */
-.search-box-container {
-    margin: 20px 0;
-}
-
+.search-box-container { margin: 20px 0; }
 #wikiSearchInput {
     width: 100%;
     box-sizing: border-box;
@@ -157,75 +132,26 @@ body {
     padding: 12px 15px;
     font-size: 15px;
     border-radius: 4px;
-    font-family: inherit;
 }
 
-#wikiSearchInput:focus {
-    outline: none;
-    box-shadow: 0 0 8px rgba(0, 255, 204, 0.4);
-}
+.wiki-hr { border: 0; border-top: 1px solid #333; margin-bottom: 25px; }
+.wiki-article { background-color: #151515; border: 1px solid #252525; padding: 20px; margin-bottom: 25px; border-radius: 4px; }
+.article-title { margin-top: 0; color: #00ffcc; font-size: 20px; }
+.article-meta { font-size: 13px; color: #888; margin-bottom: 12px; }
+.article-meta span { margin-right: 15px; }
 
-.wiki-hr {
-    border: 0;
-    border-top: 1px solid #333;
-    margin-bottom: 25px;
-}
+/* CSS MỚI: ĐỊNH DẠNG KHUNG ẢNH VÀ VIDEO NHÚNG */
+.wiki-media-box { margin: 15px 0; display: flex; flex-direction: column; gap: 15px; }
+.wiki-uploaded-img { max-width: 100%; max-height: 400px; object-fit: contain; border: 1px solid #333; border-radius: 4px; }
+.video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border: 1px solid #333; border-radius: 4px; }
+.video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
 
-.wiki-article {
-    background-color: #151515;
-    border: 1px solid #252525;
-    padding: 20px;
-    margin-bottom: 25px;
-    border-radius: 4px;
-}
-
-.article-title {
-    margin-top: 0;
-    color: #00ffcc;
-    font-size: 20px;
-}
-
-.article-meta {
-    font-size: 13px;
-    color: #888;
-    margin-bottom: 12px;
-}
-
-.article-meta span {
-    margin-right: 15px;
-}
-
-/* HỆ THỐNG MÀU BADGE PHÂN LOẠI TRẠNG THÁI */
-.badge {
-    padding: 3px 8px;
-    color: white;
-    font-size: 11px;
-    font-weight: bold;
-    text-transform: uppercase;
-    border-radius: 3px;
-}
-
+.badge { padding: 3px 8px; color: white; font-size: 11px; font-weight: bold; text-transform: uppercase; border-radius: 3px; }
 .badge.lost { background-color: #ff3333; }
 .badge.lost-partial { background-color: #b30000; }
 .badge.partial { background-color: #ff9900; }
 .badge.found { background-color: #00cc66; }
 .badge.rumor { background-color: #777777; }
-
-.article-body {
-    line-height: 1.6;
-    color: #ccc;
-    white-space: pre-wrap;
-}
-
-.loading-text {
-    text-align: center;
-    color: #888;
-    font-style: italic;
-}
-
-.wiki-footer {
-    text-align: center;
-    padding: 40px;
-    font-size: 12px;
-    color: #555;
-}
+.article-body { line-height: 1.6; color: #ccc; white-space: pre-wrap; }
+.loading-text { text-align: center; color: #888; font-style: italic; }
+.wiki-footer { text-align: center; padding: 40px; font-size: 12px; color: #555; }
