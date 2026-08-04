@@ -52,14 +52,16 @@
                         </select>
                     </div>
 
+                    <!-- Ô CHỌN TỆP ẢNH (ID CHUẨN: imageFile) -->
                     <div class="form-group">
-                        <label>Link hình ảnh bằng chứng (Không bắt buộc):</label>
-                        <input type="url" id="imageUrl" placeholder="Dán link ảnh từ ImgBB, Google Drive...">
+                        <label>Tải lên Hình ảnh bằng chứng (Không bắt buộc):</label>
+                        <input type="file" id="imageFile" accept="image/*">
+                        <small style="color: #888; font-size: 11px; margin-top: 5px; display: block;">Hỗ trợ ảnh PNG, JPG, JPEG, WEBP...</small>
                     </div>
 
-                    <!-- CẬP NHẬT: ĐỔI THÀNH NÚT TẢI TỆP VIDEO TRỰC TIẾP TỪ ĐIỆN THOẠI -->
+                    <!-- Ô CHỌN TỆP VIDEO (ID CHUẨN: videoFile) -->
                     <div class="form-group">
-                        <label>Tải lên Video chứng cứ (Tải tệp từ máy - Không bắt buộc):</label>
+                        <label>Tải lên Video chứng cứ (Không bắt buộc):</label>
                         <input type="file" id="videoFile" accept="video/*">
                         <small style="color: #888; font-size: 11px; margin-top: 5px; display: block;">Hỗ trợ định dạng MP4, MOV, AVI...</small>
                     </div>
