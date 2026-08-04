@@ -61,27 +61,41 @@ function xuLyTimKiem(e) {
     hienThiDanhSach(tatCaBaiViet.filter(art => (art.title ? art.title.toLowerCase() : "").includes(kw)));
 }
 
-// ĐÃ SỬA LỖI ĐƯỜNG DẪN ĐÁM MÂY ĐỘC QUYỀN DPICJYRL CHUẨN XÁC 100%
-async function uploadToCloud(fileInput, type) {
+// HÀM TẢI LÊN CLOUDINARY (ĐÃ ĐƯỢC THÊM BẪY LỖI AN TOÀN CHỐNG TREO)
+async function uploadToCloud(elementId, type) {
+    const fileInput = document.getElementById(elementId);
     if (!fileInput || fileInput.files.length === 0) return "";
-    const formData = new FormData(); formData.append("file", fileInput.files[0]); formData.append("upload_preset", "wiki_lostmedia_public");
+    
+    const formData = new FormData(); 
+    formData.append("file", fileInput.files[0]); 
+    formData.append("upload_preset", "wiki_lostmedia_public");
+    
     try {
         const res = await fetch(`https://cloudinary.com{type}/upload`, { method: "POST", body: formData });
-        const data = await res.json(); return data.secure_url || "";
-    } catch { return ""; }
+        if (!res.ok) return "";
+        const data = await res.json(); 
+        return data.secure_url || "";
+    } catch (err) { 
+        console.error("Lỗi đám mây:", err);
+        return ""; 
+    }
 }
 
 if(document.getElementById("postForm")) {
     document.getElementById("postForm").addEventListener("submit", async function(e) {
-        e.preventDefault(); const btn = document.getElementById("submitBtn"); btn.innerText = "⏳ ĐANG LƯU TRỮ TỆP..."; btn.disabled = true;
-        const imgUrl = await uploadToCloud(document.getElementById("imageFile"), "image");
-        const vidUrl = await uploadToCloud(document.getElementById("videoFile"), "video");
+        e.preventDefault(); const btn = document.getElementById("submitBtn"); 
+        btn.innerText = "⏳ ĐANG LƯU TRỮ TỆP..."; btn.disabled = true;
+        
+        // Gọi hàm bốc file chuẩn xác theo đúng ID
+        const imgUrl = await uploadToCloud("imageFile", "image");
+        const vidUrl = await uploadToCloud("videoFile", "video");
+        
         btn.innerText = "⚡ ĐANG XUẤT BẢN...";
         const newArt = { title: document.getElementById("title").value, category: document.getElementById("category").value, platform: document.getElementById("platform").value, image_url: imgUrl, video_url: vidUrl, status: document.getElementById("status").value, content: document.getElementById("content").value, author: userHienTai };
         try {
             const res = await fetch(`${API_URL}?sheet=Trang tính1`, { method: 'POST', headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }, body: JSON.stringify({ data: [newArt] }) });
-            if (res.ok) { alert("✓ Thành công!"); this.reset(); document.getElementById("wikiSearchInput").value = ""; taiBaiVietWiki(); }
-            else alert("✕ Thất bại.");
+            if (res.ok) { alert("✓ Đăng bài lên Wiki thành công!"); this.reset(); document.getElementById("wikiSearchInput").value = ""; taiBaiVietWiki(); }
+            else alert("✕ Thất bại. Vui lòng kiểm tra lại sever SheetDB.");
         } catch { alert("✕ Lỗi kết nối."); }
         finally { btn.innerText = "XUẤT BẢN BÀI VIẾT"; btn.disabled = false; }
     });
