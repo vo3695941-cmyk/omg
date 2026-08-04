@@ -5,7 +5,6 @@ const API_URL = "https://sheetdb.io/api/v1/h9tbqw2l8hjh8";
 let tatCaBaiViet = [];
 let userHienTai = "";
 
-// Tự động chạy khi mở trang
 document.addEventListener("DOMContentLoaded", () => {
     taiBaiVietWiki();
     kiemTraUserLocal();
@@ -92,14 +91,6 @@ async function taiBaiVietWiki() {
     }
 }
 
-// Hàm lọc lấy ID video YouTube
-function layYoutubeEmbedId(url) {
-    if(!url) return null;
-    let regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-    let match = url.match(regExp);
-    return (match && match[2].length === 11) ? match[2] : null;
-}
-
 function hienThiDanhSach(danhSach) {
     const listContainer = document.getElementById("wikiArticlesList");
     listContainer.innerHTML = "";
@@ -110,7 +101,6 @@ function hienThiDanhSach(danhSach) {
     }
     
     danhSach.forEach(article => {
-        // 1. Logic chọn màu nhãn TRẠNG THÁI
         let badgeClass = "lost"; 
         let statusText = article.status || "Thất lạc hoàn toàn";
         if (statusText.includes("Thất lạc một phần")) badgeClass = "lost-partial"; 
@@ -118,7 +108,6 @@ function hienThiDanhSach(danhSach) {
         else if (statusText.includes("Đã tìm thấy hoàn toàn")) badgeClass = "found"; 
         else if (statusText.includes("Tin đồn")) badgeClass = "rumor"; 
 
-        // 2. Logic chọn màu nhãn HỆ ĐIỀU HÀNH
         let platformClass = "platform-none";
         let platformValue = article.platform || "";
         if (platformValue.includes("Android") && platformValue.includes("iOS")) platformClass = "platform-both";
@@ -128,26 +117,20 @@ function hienThiDanhSach(danhSach) {
         let platformText = article.platform ? `<span><b>Hệ điều hành:</b> <span class="badge ${platformClass}">${article.platform}</span></span>` : '';
         let authorText = `<span><b>Người đóng góp:</b> 👤 ${article.author || "Thành viên"}</span>`;
 
-        // 3. Xử lý hiển thị đa phương tiện (Ảnh & Video đa nền tảng)
         let mediaHTML = "";
         if (article.image_url && article.image_url.trim() !== "") {
             mediaHTML += `<img src="${article.image_url}" class="wiki-uploaded-img" alt="Bằng chứng">`;
         }
         
+        // CẬP NHẬT: TỰ ĐỘNG HIỂN THỊ TRÌNH PHÁT VIDEO ĐỘC LẬP HTML5
         if (article.video_url && article.video_url.trim() !== "") {
-            let ytId = layYoutubeEmbedId(article.video_url);
-            if (ytId) {
-                // Nếu dán link YouTube thì nhúng khung phát trực tiếp
-                mediaHTML += `<div class="video-container"><iframe src="https://youtube.com{ytId}" allowfullscreen></iframe></div>`;
-            } else {
-                // Nếu dán link nền tảng khác (TikTok, Drive, FB...) thì biến thành nút bấm
-                mediaHTML += `
-                    <div style="margin-top: 10px;">
-                        <a href="${article.video_url}" target="_blank" class="badge" style="background-color: #00ffcc; color: #121212; text-decoration: none; display: inline-block; padding: 8px 15px; text-transform: none; border-radius: 4px;">
-                            🎬 Bấm để xem Video bằng chứng (Mở tab mới)
-                        </a>
-                    </div>`;
-            }
+            mediaHTML += `
+                <div class="video-container" style="padding-bottom: 0; height: auto;">
+                    <video controls style="width:100%; max-height:400px; background:#000; border-radius:4px;">
+                        <source src="${article.video_url}" type="video/mp4">
+                        Trình duyệt của bạn không hỗ trợ xem video trực tiếp.
+                    </video>
+                </div>`;
         }
 
         const articleHTML = `
@@ -181,15 +164,43 @@ const submitBtn = document.getElementById("submitBtn");
 if(postForm) {
     postForm.addEventListener("submit", async function(e) {
         e.preventDefault();
-        submitBtn.innerText = "ĐANG XUẤT BẢN...";
+        submitBtn.innerText = "ĐANG TẢI VIDEO LÊN ĐÁM MÂY TỰ ĐỘNG...";
         submitBtn.disabled = true;
+        
+        let videoUrlFinal = "";
+        const videoFileInput = document.getElementById("videoFile");
+        
+        // NẾU NGƯỜI DÙNG CÓ CHỌN TỆP VIDEO TỪ ĐIỆN THOẠI
+        if (videoFileInput.files.length > 0) {
+            const file = videoFileInput.files[0];
+            const formData = new FormData();
+            formData.append("file", file);
+            formData.append("upload_preset", "wiki_lostmedia_public"); // Tạo kênh upload công khai miễn phí ẩn
+
+            try {
+                // Đẩy video lên đám mây Cloudinary miễn phí vĩnh viễn
+                const cloudRes = await fetch("https://cloudinary.com", {
+                    method: "POST",
+                    body: formData
+                });
+                const cloudData = await cloudRes.json();
+                if(cloudData.secure_url) {
+                    videoUrlFinal = cloudData.secure_url; // Lấy link trực tiếp file video dạng mp4
+                }
+            } catch (err) {
+                console.error("Lỗi tải video:", err);
+                alert("✕ Lỗi tải tệp video lên đám mây. Hệ thống sẽ đăng bài không kèm video.");
+            }
+        }
+        
+        submitBtn.innerText = "ĐANG XUẤT BẢN BÀI VIẾT...";
         
         const newArticle = {
             title: document.getElementById("title").value,
             category: document.getElementById("category").value,
             platform: document.getElementById("platform").value,
             image_url: document.getElementById("imageUrl").value, 
-            video_url: document.getElementById("videoUrl").value, 
+            video_url: videoUrlFinal, // Lưu link video mp4 đám mây vào Excel
             status: document.getElementById("status").value,
             content: document.getElementById("content").value,
             author: userHienTai 
@@ -203,7 +214,7 @@ if(postForm) {
             });
             
             if (response.ok) {
-                alert("✓ Bài viết của bạn đã được xuất bản lên Wiki!");
+                alert("✓ Bài viết và video của bạn đã được lưu trữ vĩnh viễn lên Wiki!");
                 postForm.reset();
                 document.getElementById("wikiSearchInput").value = "";
                 taiBaiVietWiki(); 
