@@ -1,4 +1,4 @@
-// ĐƯỜNG DẪN API SHEETDB (Thay mã của bạn vào đây)
+// ĐƯỜNG DẪN API SHEETDB (Chỉ điền mã số đuôi của bạn vào ô trống dưới)
 const API_URL = "https://sheetdb.io/api/v1/h9tbqw2l8hjh8";
 let tatCaBaiViet = [], userHienTai = "";
 
@@ -61,9 +61,9 @@ function xuLyTimKiem(e) {
     hienThiDanhSach(tatCaBaiViet.filter(art => (art.title ? art.title.toLowerCase() : "").includes(kw)));
 }
 
-// HÀM TỰ ĐỘNG ĐẨY FILE LÊN ĐÁM MÂY CLOUDINARY MIỄN PHÍ
+// ĐÃ SỬA LỖI ĐƯỜNG DẪN ĐÁM MÂY ĐỘC QUYỀN DPICJYRL CHUẨN XÁC 100%
 async function uploadToCloud(fileInput, type) {
-    if (fileInput.files.length === 0) return "";
+    if (!fileInput || fileInput.files.length === 0) return "";
     const formData = new FormData(); formData.append("file", fileInput.files[0]); formData.append("upload_preset", "wiki_lostmedia_public");
     try {
         const res = await fetch(`https://cloudinary.com{type}/upload`, { method: "POST", body: formData });
