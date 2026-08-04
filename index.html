@@ -8,7 +8,6 @@
 </head>
 <body>
 
-    <!-- Thanh công cụ trên cùng -->
     <header class="wiki-header">
         <div class="wiki-logo">LOST MEDIA WIKI</div>
         <div class="wiki-tagline">Hệ thống lưu trữ ký ức bị thất lạc</div>
@@ -17,8 +16,6 @@
     <div class="wiki-container">
         <!-- BÊN TRÁI: Khu vực Thành viên & Form đăng bài -->
         <aside class="wiki-sidebar">
-            
-            <!-- BƯỚC 1: BẮT BUỘC ĐẶT TÊN TRƯỚC -->
             <div class="form-container" id="authStep">
                 <h3>[ ĐĂNG KÝ BIỆT DANH ]</h3>
                 <p style="font-size: 12px; color: #aaa; margin-bottom: 15px;">Bạn cần chọn một cái tên duy nhất để ghi nhận đóng góp công lao. Tên này <b>không thể thay đổi</b> sau khi xác nhận.</p>
@@ -31,7 +28,6 @@
                 </form>
             </div>
 
-            <!-- BƯỚC 2: KHÓA TÊN VÀ HIỆN FORM ĐĂNG BÀI (MẶC ĐỊNH BỊ ẨN) -->
             <div class="form-container" id="postStep" style="display: none;">
                 <h3>[ ĐĂNG BÀI MỚI ]</h3>
                 <div class="user-lock-box">
@@ -56,19 +52,18 @@
                         </select>
                     </div>
 
-                    <!-- ĐÃ SỬA LỖI THẺ DIV CHO KHUNG ẢNH -->
                     <div class="form-group">
                         <label>Link hình ảnh bằng chứng (Không bắt buộc):</label>
                         <input type="url" id="imageUrl" placeholder="Dán link ảnh từ ImgBB, Google Drive...">
                     </div>
 
-                    <!-- ĐÃ SỬA LỖI THẺ DIV CHO KHUNG VIDEO TỔNG HỢP -->
+                    <!-- CẬP NHẬT: ĐỔI THÀNH NÚT TẢI TỆP VIDEO TRỰC TIẾP TỪ ĐIỆN THOẠI -->
                     <div class="form-group">
-                        <label>Link video chứng cứ (Không bắt buộc):</label>
-                        <input type="url" id="videoUrl" placeholder="Dán link video từ YouTube, TikTok, Drive...">
+                        <label>Tải lên Video chứng cứ (Tải tệp từ máy - Không bắt buộc):</label>
+                        <input type="file" id="videoFile" accept="video/*">
+                        <small style="color: #888; font-size: 11px; margin-top: 5px; display: block;">Hỗ trợ định dạng MP4, MOV, AVI...</small>
                     </div>
 
-                    <!-- ĐÃ SỬA LỖI THẺ DIV CHO TRẠNG THÁI -->
                     <div class="form-group">
                         <label>Tình trạng:</label>
                         <select id="status">
@@ -80,7 +75,6 @@
                         </select>
                     </div>
 
-                    <!-- ĐÃ SỬA LỖI THẺ DIV CHO MÔ TẢ CHI TIẾT -->
                     <div class="form-group">
                         <label>Mô tả chi tiết bài viết:</label>
                         <textarea id="content" rows="6" required placeholder="Mô tả chi tiết những gì bạn nhớ hoặc bằng chứng..."></textarea>
@@ -93,15 +87,10 @@
         <!-- Ở GIỮA: Danh sách bài viết & Thanh Tìm Kiếm -->
         <main class="wiki-content">
             <h1 class="page-title">Hồ Sơ Lưu Trữ Cộng Đồng</h1>
-            
-            <!-- THANH TÌM KIẾM TRỰC TIẾP -->
             <div class="search-box-container">
                 <input type="text" id="wikiSearchInput" placeholder="🔍 Nhập tên game hoặc ấn phẩm để tìm nhanh...">
             </div>
-            
             <hr class="wiki-hr">
-            
-            <!-- Nơi chứa danh sách bài viết -->
             <div id="wikiArticlesList">
                 <p class="loading-text">Đang tải cơ sở dữ liệu Wiki...</p>
             </div>
