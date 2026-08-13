@@ -1,170 +1,64 @@
-body {
-    background-color: #121212;
-    color: #e0e0e0;
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-}
+body { background-color: #121212; color: #e0e0e0; font-family: Arial, sans-serif; margin: 0; padding: 0; }
+.wiki-header { background-color: #1a1a1a; border-bottom: 2px solid #ff3333; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
+.wiki-logo { font-weight: bold; color: #ff3333; font-size: 20px; letter-spacing: 1px; }
+.wiki-tagline { font-size: 13px; color: #888; }
 
-.wiki-header {
-    background-color: #1a1a1a;
-    border-bottom: 2px solid #ff3333;
-    padding: 15px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
+/* CSS MÀN HÌNH CHÀO MENU CHÍNH */
+.main-menu-container { max-width: 600px; margin: 80px auto; text-align: center; background-color: #1a1a1a; border: 1px solid #333; padding: 40px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+.main-menu-container h2 { color: #fff; margin-bottom: 10px; font-size: 24px; }
+.main-menu-container p { color: #aaa; margin-bottom: 30px; font-size: 14px; }
+.menu-buttons-group { display: flex; flex-direction: column; gap: 15px; }
+.menu-btn { width: 100%; border: none; padding: 15px; font-size: 16px; font-weight: bold; cursor: pointer; border-radius: 4px; transition: 0.2s; letter-spacing: 0.5px; }
+.btn-red { background-color: #ff3333; color: white; }
+.btn-red:hover { background-color: #cc0000; }
+.btn-cyan { background-color: transparent; border: 2px solid #00ffcc; color: #00ffcc; }
+.btn-cyan:hover { background-color: #00ffcc; color: #121212; }
 
-.wiki-logo {
-    font-weight: bold;
-    color: #ff3333;
-    font-size: 20px;
-    letter-spacing: 1px;
-}
+/* CSS KHU VỰC CỬA SỔ CON (MODAL SECTION) */
+.modal-section { animation: fadeIn 0.3s ease-in-out; padding: 20px; box-sizing: border-box; }
+.modal-header { max-width: 900px; margin: 10px auto 20px auto; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; padding-bottom: 15px; }
+.modal-header h3 { margin: 0; color: #ff3333; font-size: 18px; }
+.close-modal-btn { background-color: #333; color: #fff; border: 1px solid #555; padding: 8px 15px; font-weight: bold; cursor: pointer; border-radius: 4px; transition: 0.2s; }
+.close-modal-btn:hover { background-color: #ff3333; border-color: #ff3333; }
 
-.wiki-tagline {
-    font-size: 13px;
-    color: #888;
-}
-
-.wiki-container {
-    display: flex;
-    max-width: 1200px;
-    margin: 20px auto;
-    padding: 0 15px;
-    gap: 30px;
-}
-
-/* Cột bên trái - Form */
-.wiki-sidebar {
-    width: 320px;
-    flex-shrink: 0;
-}
-
-.form-container {
-    background-color: #1a1a1a;
-    border: 1px solid #333;
-    padding: 20px;
-    border-radius: 4px;
-    position: sticky;
-    top: 20px;
-}
-
-.form-container h3 {
-    margin-top: 0;
-    color: #00ffcc;
-    font-size: 16px;
-    border-bottom: 1px solid #333;
-    padding-bottom: 10px;
-}
-
-.form-group {
-    margin-bottom: 15px;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-size: 13px;
-    color: #aaa;
-}
-
-.form-group input, .form-group select, .form-group textarea {
-    width: 100%;
-    box-sizing: border-box;
-    background-color: #222;
-    border: 1px solid #444;
-    color: #fff;
-    padding: 8px;
-    font-family: inherit;
-    border-radius: 3px;
-}
-
-.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
-    outline: none;
-    border-color: #00ffcc;
-}
-
-#submitBtn, #regBtn {
-    width: 100%;
-    border: none;
-    padding: 10px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
+.wiki-container { display: flex; justify-content: center; max-width: 1200px; margin: 10px auto; padding: 0 15px; }
+.form-container { background-color: #1a1a1a; border: 1px solid #333; padding: 25px; border-radius: 4px; width: 100%; max-width: 450px; }
+.form-container h3 { margin-top: 0; color: #00ffcc; font-size: 16px; border-bottom: 1px solid #333; padding-bottom: 10px; }
+.form-group { margin-bottom: 15px; }
+.form-group label { display: block; margin-bottom: 5px; font-size: 13px; color: #aaa; }
+.form-group input, .form-group select, .form-group textarea { width: 100%; box-sizing: border-box; background-color: #222; border: 1px solid #444; color: #fff; padding: 8px; font-family: inherit; border-radius: 3px; }
+.form-group input[type="file"] { background-color: #151515; border: 1px dashed #555; color: #888; padding: 10px; cursor: pointer; }
+#submitBtn, #regBtn { width: 100%; border: none; padding: 10px; font-weight: bold; cursor: pointer; transition: 0.2s; }
 #submitBtn { background-color: #ff3333; color: white; }
 #submitBtn:hover { background-color: #cc0000; }
 #regBtn { background-color: #00ffcc; color: #121212; }
 #regBtn:hover { background-color: #00cca3; }
+.user-lock-box { background-color: #222; border: 1px solid #444; padding: 8px 12px; font-size: 13px; margin-bottom: 15px; border-radius: 3px; }
 
-.user-lock-box {
-    background-color: #222;
-    border: 1px solid #444;
-    padding: 8px 12px;
-    font-size: 13px;
-    margin-bottom: 15px;
-    border-radius: 3px;
-}
-
-/* Cột ở giữa - Danh sách bài viết */
-.wiki-content {
-    flex-grow: 1;
-    background-color: #1a1a1a;
-    padding: 30px;
-    border: 1px solid #333;
-    border-radius: 4px;
-}
-
-/* KÍCH THƯỚC TIÊU ĐỀ */
-.page-title {
-    margin-top: 0;
-    font-size: 36px; 
-    font-weight: bold;
-    color: #ffffff;
-}
-
-/* THẨM MỸ CHO Ô TÌM KIẾM */
+.wiki-content { background-color: #1a1a1a; padding: 30px; border: 1px solid #333; border-radius: 4px; }
+.page-title { margin: 0; font-size: 26px; font-weight: bold; color: #ffffff; }
 .search-box-container { margin: 20px 0; }
-#wikiSearchInput {
-    width: 100%;
-    box-sizing: border-box;
-    background-color: #151515;
-    border: 1px solid #00ffcc; 
-    color: #ffffff;
-    padding: 12px 15px;
-    font-size: 15px;
-    border-radius: 4px;
-}
-
+#wikiSearchInput { width: 100%; box-sizing: border-box; background-color: #151515; border: 1px solid #00ffcc; color: #ffffff; padding: 12px 15px; font-size: 15px; border-radius: 4px; }
 .wiki-hr { border: 0; border-top: 1px solid #333; margin-bottom: 25px; }
 .wiki-article { background-color: #151515; border: 1px solid #252525; padding: 20px; margin-bottom: 25px; border-radius: 4px; }
 .article-title { margin-top: 0; color: #00ffcc; font-size: 20px; }
 .article-meta { font-size: 13px; color: #888; margin-bottom: 12px; }
 .article-meta span { margin-right: 15px; }
-
-/* ĐỊNH DẠNG KHUNG ẢNH VÀ VIDEO NHÚNG */
 .wiki-media-box { margin: 15px 0; display: flex; flex-direction: column; gap: 15px; }
 .wiki-uploaded-img { max-width: 100%; max-height: 400px; object-fit: contain; border: 1px solid #333; border-radius: 4px; }
-.video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border: 1px solid #333; border-radius: 4px; }
-.video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
 
 .badge { padding: 3px 8px; color: white; font-size: 11px; font-weight: bold; text-transform: uppercase; border-radius: 3px; }
-
-/* --- HỆ THỐNG MÀU BADGE PHÂN LOẠI TRẠNG THÁI --- */
 .badge.lost { background-color: #ff3333; }
 .badge.lost-partial { background-color: #b30000; }
 .badge.partial { background-color: #ff9900; }
 .badge.found { background-color: #00cc66; }
 .badge.rumor { background-color: #777777; }
-
-/* --- ĐỒNG BỘ: MÀU BADGE CHO HỆ ĐIỀU HÀNH --- */
-.badge.platform-ios { background-color: #555555; color: #ffffff; }
+.badge.platform-ios { background-color: #555555; }
 .badge.platform-android { background-color: #a4c639; color: #121212; }
-.badge.platform-both { background-color: #0066cc; color: #ffffff; }
-.badge.platform-none { background-color: #333333; color: #ffffff; }
-
+.badge.platform-both { background-color: #0066cc; }
+.badge.platform-none { background-color: #333333; }
 .article-body { line-height: 1.6; color: #ccc; white-space: pre-wrap; }
 .loading-text { text-align: center; color: #888; font-style: italic; }
 .wiki-footer { text-align: center; padding: 40px; font-size: 12px; color: #555; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
