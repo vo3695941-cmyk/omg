@@ -1,12 +1,31 @@
-// ĐƯỜNG DẪN API SHEETDB (Chỉ điền mã số đuôi của bạn vào ô trống dưới)
+// ĐƯỜNG DẪN API SHEETDB (Điền mã số đuôi thật của bạn vào đây)
 const API_URL = "https://sheetdb.io/api/v1/h9tbqw2l8hjh8";
 let tatCaBaiViet = [], userHienTai = "";
 
 document.addEventListener("DOMContentLoaded", () => {
-    taiBaiVietWiki(); kiemTraUserLocal();
+    kiemTraUserLocal();
+    
+    // KÍCH HOẠT ĐIỀU HƯỚNG CHUYỂN TRANG CHỦ
+    document.getElementById("btnGoToPost").addEventListener("click", () => moCuaSo("sectionPost"));
+    document.getElementById("btnGoToView").addEventListener("click", () => { moCuaSo("sectionView"); taiBaiVietWiki(); });
+    document.getElementById("closePostBtn").addEventListener("click", veTrangChu);
+    document.getElementById("closeViewBtn").addEventListener("click", veTrangChu);
+
     if(document.getElementById("wikiSearchInput")) document.getElementById("wikiSearchInput").addEventListener("input", xuLyTimKiem);
     if(document.getElementById("step1Form")) document.getElementById("step1Form").addEventListener("submit", xuLyDatTen);
 });
+
+// HÀM ĐIỀU HƯỚNG ẨN HIỆN GIAO DIỆN
+function moCuaSo(sectionId) {
+    document.getElementById("mainMenu").style.display = "none";
+    document.getElementById(sectionId).style.display = "block";
+}
+
+function veTrangChu() {
+    document.getElementById("sectionPost").style.display = "none";
+    document.getElementById("sectionView").style.display = "none";
+    document.getElementById("mainMenu").style.display = "block";
+}
 
 function kiemTraUserLocal() {
     userHienTai = localStorage.getItem("wiki_username") || "";
@@ -29,8 +48,9 @@ async function xuLyDatTen(e) {
 }
 
 function hienThiFormDangBai() {
-    document.getElementById("authStep").style.display = "none"; document.getElementById("postStep").style.display = "block";
-    document.getElementById("currentUserDisplay").innerText = userHienTai;
+    if(document.getElementById("authStep")) document.getElementById("authStep").style.display = "none";
+    if(document.getElementById("postStep")) document.getElementById("postStep").style.display = "block";
+    if(document.getElementById("currentUserDisplay")) document.getElementById("currentUserDisplay").innerText = userHienTai;
 }
 
 async function taiBaiVietWiki() {
@@ -61,41 +81,28 @@ function xuLyTimKiem(e) {
     hienThiDanhSach(tatCaBaiViet.filter(art => (art.title ? art.title.toLowerCase() : "").includes(kw)));
 }
 
-// HÀM TẢI LÊN CLOUDINARY (ĐÃ ĐƯỢC THÊM BẪY LỖI AN TOÀN CHỐNG TREO)
 async function uploadToCloud(elementId, type) {
     const fileInput = document.getElementById(elementId);
-    if (!fileInput || fileInput.files.length === 0) return "";
-    
-    const formData = new FormData(); 
-    formData.append("file", fileInput.files[0]); 
-    formData.append("upload_preset", "wiki_lostmedia_public");
-    
+    if (!fileInput || !fileInput.files || fileInput.files.length === 0) return "";
+    const formData = new FormData(); formData.append("file", fileInput.files[0]); formData.append("upload_preset", "wiki_lostmedia_public");
     try {
         const res = await fetch(`https://cloudinary.com{type}/upload`, { method: "POST", body: formData });
         if (!res.ok) return "";
-        const data = await res.json(); 
-        return data.secure_url || "";
-    } catch (err) { 
-        console.error("Lỗi đám mây:", err);
-        return ""; 
-    }
+        const data = await res.json(); return data.secure_url || "";
+    } catch { return ""; }
 }
 
 if(document.getElementById("postForm")) {
     document.getElementById("postForm").addEventListener("submit", async function(e) {
-        e.preventDefault(); const btn = document.getElementById("submitBtn"); 
-        btn.innerText = "⏳ ĐANG LƯU TRỮ TỆP..."; btn.disabled = true;
-        
-        // Gọi hàm bốc file chuẩn xác theo đúng ID
+        e.preventDefault(); const btn = document.getElementById("submitBtn"); btn.innerText = "⏳ ĐANG LƯU TRỮ TỆP..."; btn.disabled = true;
         const imgUrl = await uploadToCloud("imageFile", "image");
         const vidUrl = await uploadToCloud("videoFile", "video");
-        
         btn.innerText = "⚡ ĐANG XUẤT BẢN...";
         const newArt = { title: document.getElementById("title").value, category: document.getElementById("category").value, platform: document.getElementById("platform").value, image_url: imgUrl, video_url: vidUrl, status: document.getElementById("status").value, content: document.getElementById("content").value, author: userHienTai };
         try {
-            const res = await fetch(`${API_URL}?sheet=Trang tính1`, { method: 'POST', headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }, body: JSON.stringify({ data: [newArt] }) });
-            if (res.ok) { alert("✓ Đăng bài lên Wiki thành công!"); this.reset(); document.getElementById("wikiSearchInput").value = ""; taiBaiVietWiki(); }
-            else alert("✕ Thất bại. Vui lòng kiểm tra lại sever SheetDB.");
+            const res = await fetch(`${API_URL}?sheet=Trang tính1`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ data: [newArt] }) });
+            if (res.ok) { alert("✓ Đăng bài lên Wiki thành công!"); this.reset(); document.getElementById("wikiSearchInput").value = ""; veTrangChu(); }
+            else alert("✕ Thất bại.");
         } catch { alert("✕ Lỗi kết nối."); }
         finally { btn.innerText = "XUẤT BẢN BÀI VIẾT"; btn.disabled = false; }
     });
