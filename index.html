@@ -8,14 +8,31 @@
 </head>
 <body>
 
+    <!-- Thanh công cụ trên cùng -->
     <header class="wiki-header">
         <div class="wiki-logo">LOST MEDIA WIKI</div>
         <div class="wiki-tagline">Hệ thống lưu trữ ký ức bị thất lạc</div>
     </header>
 
-    <div class="wiki-container">
-        <!-- BÊN TRÁI: Khu vực Thành viên & Form đăng bài -->
-        <aside class="wiki-sidebar">
+    <!-- MÀN HÌNH CHÍNH: 2 LỰA CHỌN KHI VÀO WEB -->
+    <div class="main-menu-container" id="mainMenu">
+        <h2>Chào mừng bạn đến với Kho Lưu Trữ Mở</h2>
+        <p>Vui lòng chọn một hành động để tiếp tục truy cập tư liệu:</p>
+        <div class="menu-buttons-group">
+            <button class="menu-btn btn-red" id="btnGoToPost">📝 ĐĂNG BÀI ĐĂNG</button>
+            <button class="menu-btn btn-cyan" id="btnGoToView">🔍 XEM BÀI ĐĂNG CỦA NGƯỜI KHÁC</button>
+        </div>
+    </div>
+
+    <!-- KHU VỰC 1: ĐĂNG BÀI ĐĂNG (MẶC ĐỊNH BỊ ẨN) -->
+    <div class="modal-section" id="sectionPost" style="display: none;">
+        <div class="modal-header">
+            <h3>[ KHU VỰC XUẤT BẢN HỒ SƠ ]</h3>
+            <button class="close-modal-btn" id="closePostBtn">✕ ĐÓNG</button>
+        </div>
+        
+        <div class="wiki-container">
+            <!-- BƯỚC 1.1: ĐĂNG KÝ BIỆT DANH -->
             <div class="form-container" id="authStep">
                 <h3>[ ĐĂNG KÝ BIỆT DANH ]</h3>
                 <p style="font-size: 12px; color: #aaa; margin-bottom: 15px;">Bạn cần chọn một cái tên duy nhất để ghi nhận đóng góp công lao. Tên này <b>không thể thay đổi</b> sau khi xác nhận.</p>
@@ -28,8 +45,8 @@
                 </form>
             </div>
 
-            <div class="form-container" id="postStep" style="display: none;">
-                <h3>[ ĐĂNG BÀI MỚI ]</h3>
+            <!-- BƯỚC 1.2: FORM ĐĂNG BÀI MỚI -->
+            <div class="form-container" id="postStep" style="display: none; width: 100%; max-width: 500px; margin: 0 auto;">
                 <div class="user-lock-box">
                     👤 Tài khoản: <b id="currentUserDisplay" style="color: #00ffcc;"></b> <span style="font-size: 11px; color: #888;">(Đã khóa cứng)</span>
                 </div>
@@ -52,19 +69,14 @@
                         </select>
                     </div>
 
-                    <!-- Ô CHỌN TỆP ẢNH CHUẨN ĐỂ KHÔNG BỊ LỖI TREO CODE -->
-<div class="form-group">
-    <label>Tải lên Hình ảnh bằng chứng (Không bắt buộc):</label>
-    <input type="file" id="imageFile" accept="image/*">
-    <small style="color: #888; font-size: 11px; margin-top: 5px; display: block;">Hỗ trợ ảnh PNG, JPG, JPEG, WEBP...</small>
-</div>
+                    <div class="form-group">
+                        <label>Tải lên Hình ảnh bằng chứng (Không bắt buộc):</label>
+                        <input type="file" id="imageFile" accept="image/*">
+                    </div>
 
-
-                    <!-- Ô CHỌN TỆP VIDEO (ID CHUẨN: videoFile) -->
                     <div class="form-group">
                         <label>Tải lên Video chứng cứ (Không bắt buộc):</label>
                         <input type="file" id="videoFile" accept="video/*">
-                        <small style="color: #888; font-size: 11px; margin-top: 5px; display: block;">Hỗ trợ định dạng MP4, MOV, AVI...</small>
                     </div>
 
                     <div class="form-group">
@@ -85,19 +97,29 @@
                     <button type="submit" id="submitBtn">XUẤT BẢN BÀI VIẾT</button>
                 </form>
             </div>
-        </aside>
+        </div>
+    </div>
 
-        <!-- Ở GIỮA: Danh sách bài viết & Thanh Tìm Kiếm -->
-        <main class="wiki-content">
+    <!-- KHU VỰC 2: XEM BÀI ĐĂNG NGƯỜI KHÁC (MẶC ĐỊNH BỊ ẨN) -->
+    <div class="modal-section" id="sectionView" style="display: none;">
+        <div class="modal-header">
             <h1 class="page-title">Hồ Sơ Lưu Trữ Cộng Đồng</h1>
+            <button class="close-modal-btn" id="closeViewBtn">✕ TRỞ VỀ TRANG CHÍNH</button>
+        </div>
+
+        <div class="wiki-content" style="max-width: 900px; margin: 0 auto;">
+            <!-- THANH TÌM KIẾM TRỰC TIẾP -->
             <div class="search-box-container">
                 <input type="text" id="wikiSearchInput" placeholder="🔍 Nhập tên game hoặc ấn phẩm để tìm nhanh...">
             </div>
+            
             <hr class="wiki-hr">
+            
+            <!-- Nơi SheetDB lôi các bài đăng ra hiển thị -->
             <div id="wikiArticlesList">
-                <p class="loading-text">Đang tải cơ sở dữ liệu Wiki...</p>
+                <p class="loading-text">Đang kết nối cơ sở dữ liệu và tải bài viết...</p>
             </div>
-        </main>
+        </div>
     </div>
 
     <footer class="wiki-footer">
