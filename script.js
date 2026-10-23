@@ -1,5 +1,5 @@
 // ĐƯỜNG DẪN API SHEETDB (Điền mã số đuôi thật của bạn vào đây)
-const API_URL = "https://sheetdb.io/api/v1/9lry2ceslpzhw";
+const API_URL = "https://api.sheetbest.com/sheets/fbe47d3b-be0f-4b0e-a841-05d17245c7de";
 let tatCaBaiViet = [], userHienTai = "";
 
 document.addEventListener("DOMContentLoaded", () => {
